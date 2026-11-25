@@ -9,4 +9,19 @@
 .reference { color: var(--muted); margin-top: 1rem; }
 .details dt { font-weight: 700; color: var(--accent); }
 .details dd + dt { margin-top: 1rem; }
-.members { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+.profile { color: var(--muted); }
+.roster { list-style: none; margin: 1.25rem 0 0; padding: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); overflow: hidden; }
+.person { display: flex; gap: 1rem; align-items: flex-start; padding: 1.1rem 1.25rem; }
+.person + .person { border-top: 1px solid var(--line); }
+.avatar { flex: none; width: 4.5rem; height: 4.5rem; object-fit: cover; border-radius: .85rem; border: 1px solid var(--line); background: var(--tint); filter: saturate(.92) contrast(1.03); }
+.personBody { min-width: 0; }
+.personName { font-size: 1.05rem; line-height: 1.3; }
+.personRole { margin-top: .15rem; color: var(--accent); font-size: .85rem; font-weight: 650; }
+.personBio { margin-top: .4rem; color: var(--muted); font-size: .92rem; }
+.skills { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: .65rem 0 0; padding: 0; }
+.skills li { padding: .15rem .6rem; background: var(--tint); border-radius: 1rem; color: var(--accent); font-size: .78rem; font-weight: 600; }
+.link { display: inline-flex; align-items: center; gap: .4rem; margin-top: .65rem; margin-right: .75rem; color: var(--accent); font-size: .88rem; font-weight: 650; }
+@media (max-width: 30rem) {
+  .person { gap: .85rem; padding: 1rem; }
+  .avatar { width: 3.75rem; height: 3.75rem; }
+}
