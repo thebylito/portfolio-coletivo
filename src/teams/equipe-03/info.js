@@ -4,5 +4,5 @@ export default {
   name: 'HomeWash',
   theme: 'Lavagem automotiva a domicílio',
   summary:
-    'Plataforma web de intermediação de lavagem automotiva a domicílio com preço fixo e aceite exclusivo atômico.',
+    'Lavagem de carro a domicílio com preço fechado. O primeiro lavador aprovado que aceita o pedido vai até o cliente.',
 }
