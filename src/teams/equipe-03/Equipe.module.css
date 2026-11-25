@@ -201,6 +201,7 @@
   font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
+  touch-action: manipulation;
   transition: background-color 180ms var(--ease), color 180ms var(--ease), border-color 180ms var(--ease);
 }
 
@@ -464,6 +465,7 @@
   font-weight: 800;
   text-align: left;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .accordionTrigger:hover .accordionTitleText {
@@ -623,6 +625,7 @@
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
+  touch-action: manipulation;
   transition: background-color 180ms var(--ease), color 180ms var(--ease), border-color 180ms var(--ease);
 }
 
@@ -685,6 +688,7 @@
   font-family: inherit;
   text-align: left;
   cursor: pointer;
+  touch-action: manipulation;
   transition: color 180ms var(--ease);
 }
 
@@ -940,12 +944,16 @@
   place-items: center;
   width: 3rem;
   height: 3rem;
+  padding: 0;
   border-radius: 50%;
   background: var(--paper);
   border: 2px solid var(--rule);
   color: var(--ink);
+  font-family: inherit;
   font-size: 0.92rem;
   font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
   transition: background-color 240ms var(--ease), color 240ms var(--ease), border-color 240ms var(--ease), box-shadow 240ms var(--ease);
 }
 
@@ -1134,6 +1142,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   text-decoration: none;
+  touch-action: manipulation;
   transition: background-color 180ms var(--ease), color 180ms var(--ease), border-color 180ms var(--ease);
 }
 
@@ -1292,6 +1301,12 @@
 
   .tabList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tabBtn,
+  .segmentPill,
+  .socialLink {
+    min-height: 2.75rem;
   }
 
   .specRow,

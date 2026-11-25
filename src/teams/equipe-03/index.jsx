@@ -270,7 +270,7 @@ const MEMBERS = [
     photoScale: 1.06,
     skills: ['Node.js / Express', 'MongoDB / Mongoose', 'Atomicidade (HTTP 409)', 'Vitest / Supertest'],
     bio: 'Estruturou a API REST em Node.js/Express, modelou coleções, snapshots e índices no MongoDB e implementou o aceite exclusivo atômico com testes de concorrência.',
-    links: [],
+    links: [{ kind: 'github', label: 'GitHub', url: 'https://github.com/artmasrua' }],
   },
   {
     name: 'Julia Alvino de Mesquita Bernardo',
@@ -420,9 +420,11 @@ export default function Equipe03() {
   const [activeSegmentId, setActiveSegmentId] = useState(null)
   const [activeTabId, setActiveTabId] = useState(ARCHITECTURE_TABS[0].id)
   const [processProgress, setProcessProgress] = useState(0)
+  const [pinnedProcessStep, setPinnedProcessStep] = useState(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   const progressBarRef = useRef(null)
+  const stagePanelRef = useRef(null)
   const tabListRef = useRef(null)
   const tabRefs = useRef({})
   const [tabIndicator, setTabIndicator] = useState({ x: 0, y: 0, width: 0, height: 0, ready: false })
@@ -601,12 +603,14 @@ export default function Equipe03() {
     }
 
     banner.addEventListener('pointermove', handlePointerMove, { passive: true })
+    banner.addEventListener('pointerdown', handlePointerMove, { passive: true })
     banner.addEventListener('pointerleave', handlePointerLeave, { passive: true })
     window.addEventListener('pagehide', handlePageHide)
 
     return () => {
       handlePageHide()
       banner.removeEventListener('pointermove', handlePointerMove)
+      banner.removeEventListener('pointerdown', handlePointerMove)
       banner.removeEventListener('pointerleave', handlePointerLeave)
       window.removeEventListener('pagehide', handlePageHide)
     }
@@ -622,6 +626,16 @@ export default function Equipe03() {
   const handleSegmentSelect = (segment) => {
     setActivePillarId(segment.pillarId)
     setActiveSegmentId(segment.id)
+    if (window.innerWidth <= 896 && stagePanelRef.current) {
+      window.requestAnimationFrame(() => {
+        const panel = stagePanelRef.current
+        if (!panel) return
+        const rect = panel.getBoundingClientRect()
+        if (rect.top < 72 || rect.top > window.innerHeight * 0.7) {
+          panel.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest' })
+        }
+      })
+    }
   }
 
   const handleTabKeyDown = (event, currentIndex) => {
@@ -643,7 +657,9 @@ export default function Equipe03() {
   const stageNote = activeSegment ? activeSegment.note : activePillar.defaultNote
   const stagePrimaryCta = activeSegment ? activeSegment.cta : activePillar.primaryCta
   const stageKey = `${activePillar.id}-${activeSegment?.id || 'default'}`
-  const effectiveProcessProgress = prefersReducedMotion ? 1 : processProgress
+  const baseProcessProgress = prefersReducedMotion ? 1 : processProgress
+  const effectiveProcessProgress =
+    pinnedProcessStep !== null ? Math.max(baseProcessProgress, pinnedProcessStep / 3) : baseProcessProgress
 
   return (
     <article className={styles.page}>
@@ -793,7 +809,7 @@ export default function Equipe03() {
             </div>
 
             <div className={styles.stageColumn}>
-              <div className={styles.stagePanel}>
+              <div ref={stagePanelRef} className={styles.stagePanel}>
                 <div key={stageKey} className={styles.stageInner}>
                   <p className={styles.stageKicker}>{activePillar.kicker}</p>
                   <h3 className={styles.stageTitle}>{activePillar.title}</h3>
@@ -982,7 +998,8 @@ export default function Equipe03() {
             <ol className={styles.processGrid}>
               {PROCESS_STEPS.map((item, idx) => {
                 const threshold = idx === 0 ? 0.04 : idx / 3 - 0.04
-                const isReached = prefersReducedMotion || effectiveProcessProgress >= threshold
+                const isPinned = pinnedProcessStep === idx
+                const isReached = prefersReducedMotion || effectiveProcessProgress >= threshold || isPinned
                 return (
                   <li
                     key={item.step}
@@ -992,7 +1009,15 @@ export default function Equipe03() {
                       {item.step}
                     </span>
                     <div className={styles.processNodeWrap}>
-                      <span className={styles.processNode}>{item.step}</span>
+                      <button
+                        type="button"
+                        className={styles.processNode}
+                        aria-pressed={isPinned}
+                        aria-label={`Marco ${item.step}: ${item.title}`}
+                        onClick={() => setPinnedProcessStep((prev) => (prev === idx ? null : idx))}
+                      >
+                        {item.step}
+                      </button>
                     </div>
                     <div className={styles.processBody}>
                       <h3 className={styles.processTitle}>{item.title}</h3>
